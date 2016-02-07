@@ -6,24 +6,6 @@ import java.util.StringJoiner;
 public class Curiputu {
     static Elem[] table = new Elem[15];
 
-    private static void mapFill(Map table) {
-        table.put("a1", 0010);
-        table.put("a2", 0100);
-        table.put("a3", 1000);
-        table.put("a4", 0011);
-        table.put("a5", 0110);
-        table.put("a6", 1100);
-        table.put("a7", 1011);
-        table.put("a8", 0101);
-        table.put("a9", 1010);
-        table.put("a10", 0111);
-        table.put("a11", 1110);
-        table.put("a12", 1111);
-        table.put("a13", 1101);
-        table.put("a14", 1001);
-        table.put("a15", 0001);
-    }
-
     private static void tableFill(Elem[] arr) {
         arr[0] = new Elem(1, 14, 2, "x");
         arr[1] = new Elem(2, 13, 4, "x2");
