@@ -25,7 +25,10 @@ public class Curiputu {
     }
 
     static Elem byA(int a) {
-        if (a > 15) a %= 15;
+
+        if (a % 15 == 0) a = 15;
+        else if (a > 15) a %= 15;
+
         for (Elem e : table) {
             if (e.a == a) return e;
         }
@@ -56,19 +59,32 @@ public class Curiputu {
         System.out.println(string);
     }
 
-    static int[] sbMatrix(int[] matrix) {
+    static int[] sbMatrix(int[] matrix, boolean flag) {
         int[] result = new int[matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < S.length; j++) {
-                if (S[j][2] == matrix[i]) {
-                    result[i] = S[j][0];
-                    break;
+
+        if (flag) {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < S.length; j++) {
+                    if (S[j][2] == matrix[i]) {
+                        result[i] = S[j][0];
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < S.length; j++) {
+                    if (S[j][0] == matrix[i]) {
+                        result[i] = S[j][2];
+                        break;
+                    }
                 }
             }
         }
 
         return result;
     }
+
 
     static int[] reverseMatrix(int[] matrix) {
         return new int[]{matrix[1], matrix[0]};
@@ -83,19 +99,55 @@ public class Curiputu {
         return result;
     }
 
-
-    static int[] sumMatrixByA(int[] matrix) {
-        int[] result = new int[matrix.length / 2];
-        for (int i = 0; i < matrix.length; i += 2) {
-            result[i] = byA(matrix[i]).dec ^ byA(matrix[i + 1]).dec;
+    static int[] divisionMatrix(int[] matrix, int divisor) {
+        int[] result = new int[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            result[i] = byA(byDec(matrix[i]).a + byRev(divisor).a).dec;
         }
+        return result;
+
+    }
+
+    static int[] concatArrays(int[] arrOne, int[] arrTwo) {
+        int[] result = new int[arrOne.length + arrTwo.length];
+        System.arraycopy(arrOne, 0, result, 0, arrOne.length);
+        System.arraycopy(arrTwo, 0, result, arrOne.length, arrTwo.length);
         return result;
     }
 
-    public static void main(String[] args) throws NullPointerException {
-        int i = 7, k = 1, Px = 7, P1x = 6;
-        //int i = 26, k = 3, Px = 12, P1x = 3;
-        int Cx[] = {1, 13};
+    static int[] sumMatrix(int[] matr1, int[] matr2) {
+        int resultMatr[] = new int[matr1.length];
+        int resMatr[] = new int[matr2.length];
+
+
+        if (matr2.length < matr1.length) {
+            for (int i = 0, j = 0; i < matr1.length; i += 2, j++) {
+                int sumA = byDec(matr1[i]).a + byDec(matr2[0]).a;
+                if (sumA > 15) sumA %= 15;
+                resultMatr[i] = sumA;
+
+                int sumB = byDec(matr1[i + 1]).a + byDec(matr2[1]).a;
+                if (sumB > 15) sumB %= 15;
+                resultMatr[i + 1] = sumB;
+            }
+            resMatr[0] = byA(resultMatr[0]).dec ^ byA(resultMatr[1]).dec;
+            resMatr[1] = byA(resultMatr[2]).dec ^ byA(resultMatr[3]).dec;
+            resultMatr = resMatr;
+
+
+        } else {
+            for (int i = 0; i < matr1.length; i++) {
+                resultMatr[i] = matr1[i] ^ matr2[i];
+            }
+        }
+        return resultMatr;
+    }
+
+    static void partOne(){
+        //int i = 7, k = 1, Px = 7, P1x = 6;              //std
+        int i = 26, k = 3, Px = 12, P1x = 3;          //mine
+        //int i = 21, k = 3, Px = 12, P1x = 4;          //nikit
+        int Cx[] = {13, 4};
 
         tableFill(table);
 
@@ -118,7 +170,7 @@ public class Curiputu {
 
 
         //K 2
-        K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(2).dec).a +
+        K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(4).dec).a +
                 byRev(byDec(k).a).a;
         K[2] %= 15;
         if (K[2] == 0) K[2] = 1;
@@ -128,6 +180,8 @@ public class Curiputu {
         //K 3
         K[3] = i ^ 7;
         System.out.println("K");
+
+
         binShow(K[0]);
         binShow(K[1]);
         binShow(K[2]);
@@ -155,10 +209,10 @@ public class Curiputu {
         }
 
         System.out.println("P");
-//        binShow(P[0]);
-//        binShow(P[1]);
-//        binShow(P[2]);
-//        binShow(P[3]);
+        binShow(P[0]);
+        binShow(P[1]);
+        binShow(P[2]);
+        binShow(P[3]);
 
         S = new int[16][3];
 
@@ -185,8 +239,9 @@ public class Curiputu {
             String strBin = Integer.toString(S[j][2], 2);
             while (strBin.length() < 4) strBin = "0" + strBin;
 
-            //   System.out.printf("S[%4s] = a^%2d = %4s\n", strS, S[j][1], strBin);
+            System.out.printf("S[%4s] = a^%2d = %4s\n", strS, S[j][1], strBin);
         }
+        System.out.println();
 
         //C
 
@@ -209,23 +264,28 @@ public class Curiputu {
         W[0] = new int[]{K[0], K[1]};
         W[1] = new int[]{K[2], K[3]};
 
-        W[2] = sumMatrix(sumMatrix(W[0], sbMatrix(reverseMatrix(W[1]))), C[2]);
+        W[2] = sumMatrix(sumMatrix(W[0], sbMatrix(reverseMatrix(W[1]), true)), C[2]);
 
         W[3] = sumMatrix(W[2], W[1]);
 
-        W[4] = sumMatrix(sumMatrix(sbMatrix(reverseMatrix(W[3])), W[2]), C[8]);
+        W[4] = sumMatrix(sumMatrix(sbMatrix(reverseMatrix(W[3]), true), W[2]), C[8]);
 
         W[5] = sumMatrix(W[3], W[4]);
 
-        W[6] = sumMatrix(sumMatrix(W[4], sbMatrix(reverseMatrix(W[5]))), C[6]);
+        W[6] = sumMatrix(sumMatrix(W[4], sbMatrix(reverseMatrix(W[5]), true)), C[6]);
+
+
+        // ENCRYPT
 
 
         int[] arrHelper = concatArrays(W[0], W[1]);
+//P[2]=10;
+        //    System.out.println("arrHelp: " + Arrays.toString(arrHelper));
 
         int[] X = sumMatrix(P, arrHelper);
         System.out.println("Start: " + Arrays.toString(X));
 
-        X = sbMatrix(X);
+        X = sbMatrix(X, true);
         System.out.println("Sub: " + Arrays.toString(X));
 
         X = shiftMatrix(X);
@@ -249,45 +309,66 @@ public class Curiputu {
         X = concatArrays(mixOne, mixTwo);
         System.out.println("X mix: " + Arrays.toString(X));
 
+        X = sumMatrix(X, concatArrays(W[2], W[3]));
+        System.out.println("X round key: " + Arrays.toString(X));
+
+        X = sbMatrix(X, true);
+        System.out.println("X sub bytes: " + Arrays.toString(X));
+
+        X = shiftMatrix(X);
+        System.out.println("X shift: " + Arrays.toString(X));
+
+        X = sumMatrix(X, concatArrays(W[4], W[5]));
+        System.out.println("X add round AND cryptic end: " + Arrays.toString(X));
+
+        System.out.println();
+
+        // DECIPHER
+
+        X = sumMatrix(X, concatArrays(W[4], W[5]));
+        System.out.println("X 0: " + Arrays.toString(X));
+
+        X = shiftMatrix(X);
+        System.out.println("X 1.1) shift: " + Arrays.toString(X));
+
+        X = sbMatrix(X, false);
+        System.out.println("X 1.2)SB: " + Arrays.toString(X));
+
+        X = sumMatrix(X, concatArrays(W[2], W[3]));
+        System.out.println("X 1.3)add round: " + Arrays.toString(X));
+
+
+        System.out.println("Y: " + Arrays.toString(y));
+        int delta = byDec(byA(byDec(y[0]).a + byDec(y[3]).a).dec ^
+                byA(byDec(y[1]).a + byDec(y[2]).a).dec).a;
+
+        System.out.println("Delta : " + delta);
+
+        int[] M_1 = divisionMatrix(y, delta);
+        System.out.println("M^(-1): " + Arrays.toString(M_1));
+
+        mixOne = sumMatrix(M_1, new int[]{X[0], X[1]});
+        System.out.println("Mix one: " + Arrays.toString(mixOne));
+
+        mixTwo = sumMatrix(M_1, new int[]{X[2], X[3]});
+        System.out.println("Mix two: " + Arrays.toString(mixTwo));
+
+        X = concatArrays(mixOne, mixTwo);
+        System.out.println("Mix : " + Arrays.toString(X));
+
+        X = shiftMatrix(X);
+        System.out.println("Shift : " + Arrays.toString(X));
+
+        X = sbMatrix(X, false);
+        System.out.println("SB : " + Arrays.toString(X));
+
+        X = sumMatrix(X, concatArrays(W[0], W[1]));
+        System.out.println("AddRound : " + Arrays.toString(X));
 
     }
 
-    static int[] concatArrays(int[] arrOne, int[] arrTwo) {
-        int[] result = new int[arrOne.length + arrTwo.length];
-        System.arraycopy(arrOne, 0, result, 0, arrOne.length);
-        System.arraycopy(arrTwo, 0, result, arrOne.length, arrTwo.length);
-        return result;
+    public static void main(String[] args) throws NullPointerException {
+        partOne();
     }
-
-    static int[] sumMatrix(int[] matr1, int[] matr2) {
-        int resultMatr[] = new int[matr1.length];
-        int resMatr[] = new int[matr2.length];
-
-
-        if (matr2.length < matr1.length) {
-            for (int i = 0; i < matr1.length; i += 2) {
-                int sumA = byDec(matr1[i]).a + byDec(matr2[0]).a;
-                sumA %= 15;
-                if (sumA == 0) sumA = 1;
-                resultMatr[i] = sumA;
-
-                int sumB = byDec(matr1[i + 1]).a + byDec(matr2[1]).a;
-                sumB %= 15;
-                if (sumB == 0) sumB = 1;
-                resultMatr[i + 1] = sumB;
-            }
-            resMatr[0] = byA(resultMatr[0]).dec ^ byA(resultMatr[1]).dec;
-            resMatr[1] = byA(resultMatr[2]).dec ^ byA(resultMatr[3]).dec;
-            resultMatr = resMatr;
-
-
-        } else {
-            for (int i = 0; i < matr1.length; i++) {
-                resultMatr[i] = matr1[i] ^ matr2[i];
-            }
-        }
-        return resultMatr;
-    }
-
 
 }
