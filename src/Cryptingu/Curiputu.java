@@ -3,7 +3,7 @@ package Cryptingu;
 import java.util.Arrays;
 
 public class Curiputu {
-    static Elem[] table = new Elem[15];
+    static Elem[] table = new Elem[16];
     static int[][] S;
 
     private static void tableFill(Elem[] arr) {
@@ -22,6 +22,7 @@ public class Curiputu {
         arr[12] = new Elem(13, 2, 13, "x3+x2+1");
         arr[13] = new Elem(14, 1, 9, "x3+1");
         arr[14] = new Elem(15, 15, 1, "1");
+
     }
 
     static Elem byA(int a) {
@@ -37,6 +38,7 @@ public class Curiputu {
 
     static Elem byDec(int dec) {
         if (dec > 15) dec %= 15;
+
         for (Elem e : table) {
             if (e.dec == dec) {
                 return e;
@@ -85,7 +87,6 @@ public class Curiputu {
         return result;
     }
 
-
     static int[] reverseMatrix(int[] matrix) {
         return new int[]{matrix[1], matrix[0]};
     }
@@ -118,20 +119,25 @@ public class Curiputu {
     static int[] sumMatrix(int[] matr1, int[] matr2) {
         int resultMatr[] = new int[matr1.length];
         int resMatr[] = new int[matr2.length];
-
+        int sumA=0,sumB = 0;
 
         if (matr2.length < matr1.length) {
             for (int i = 0, j = 0; i < matr1.length; i += 2, j++) {
-                int sumA = byDec(matr1[i]).a + byDec(matr2[0]).a;
+
+                if(matr1[i]==0 || matr2[0]==0) sumA=0;
+                else sumA = byDec(matr1[i]).a + byDec(matr2[0]).a;
                 if (sumA > 15) sumA %= 15;
                 resultMatr[i] = sumA;
 
-                int sumB = byDec(matr1[i + 1]).a + byDec(matr2[1]).a;
+
+                if (matr1[i+1]==0 || matr2[1]==0) sumB=0;
+                else sumB = byDec(matr1[i + 1]).a + byDec(matr2[1]).a;
                 if (sumB > 15) sumB %= 15;
                 resultMatr[i + 1] = sumB;
+
             }
-            resMatr[0] = byA(resultMatr[0]).dec ^ byA(resultMatr[1]).dec;
-            resMatr[1] = byA(resultMatr[2]).dec ^ byA(resultMatr[3]).dec;
+            resMatr[0] = byA(resultMatr[0]).dec ^ byA(resultMatr[2]).dec;
+            resMatr[1] = byA(resultMatr[1]).dec ^ byA(resultMatr[3]).dec;
             resultMatr = resMatr;
 
 
@@ -143,18 +149,21 @@ public class Curiputu {
         return resultMatr;
     }
 
-    static void partOne(){
-        //int i = 7, k = 1, Px = 7, P1x = 6;              //std
-        int i = 26, k = 3, Px = 12, P1x = 3;          //mine
-        //int i = 21, k = 3, Px = 12, P1x = 4;          //nikit
-        int Cx[] = {13, 4};
+    static void partOne() {
+        //int i = 7, k = 1, Px = 7, P1x = 6,Cx[] = {1, 13};              //std
+        int i = 26, k = 3, Px = 12, P1x = 3, Cx[] = {13, 4};          //mine
+        //int i = 21, k = 3, Px = 12, P1x = 4, Cx[]={8,1};             //nikit
+        //int i = 5, k = 3, Px = 14, P1x = 2;                        //kasya
+        //int Cx[] = {1, 13};
 
         tableFill(table);
 
         int K[] = new int[4];
-        i %= 15;
-        if (i == 0) i = 1;
+
+        if (i > 15) i %= 15;
         //K 0
+        System.out.println(i);
+
         K[0] = byDec(i).a + byDec(2).a + byRev(byDec(3).a).a;
         K[0] %= 15;
         if (K[0] == 0) K[0] = 1;
@@ -172,8 +181,8 @@ public class Curiputu {
         //K 2
         K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(4).dec).a +
                 byRev(byDec(k).a).a;
-        K[2] %= 15;
-        if (K[2] == 0) K[2] = 1;
+        if (K[2] > 15) K[2] %= 15;
+
         K[2] = byA(K[2]).dec;
 
 
@@ -181,6 +190,10 @@ public class Curiputu {
         K[3] = i ^ 7;
         System.out.println("K");
 
+//        K[0] = 3;
+//        K[1] = 7;
+//        K[2] = 10;
+//        K[3] = 13;
 
         binShow(K[0]);
         binShow(K[1]);
@@ -275,12 +288,16 @@ public class Curiputu {
         W[6] = sumMatrix(sumMatrix(W[4], sbMatrix(reverseMatrix(W[5]), true)), C[6]);
 
 
+        for (int j = 0; j < W.length; j++) {
+            System.out.println("W[" + j + "]" + Arrays.toString(W[j]));
+        }
+        System.out.println();
+
+
         // ENCRYPT
 
 
         int[] arrHelper = concatArrays(W[0], W[1]);
-//P[2]=10;
-        //    System.out.println("arrHelp: " + Arrays.toString(arrHelper));
 
         int[] X = sumMatrix(P, arrHelper);
         System.out.println("Start: " + Arrays.toString(X));
