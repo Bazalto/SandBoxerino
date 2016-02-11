@@ -22,13 +22,14 @@ public class Curiputu {
         arr[12] = new Elem(13, 2, 13, "x3+x2+1");
         arr[13] = new Elem(14, 1, 9, "x3+1");
         arr[14] = new Elem(15, 15, 1, "1");
+        arr[15] = new Elem(0, 0, 0, "1");
 
     }
 
     static Elem byA(int a) {
 
-        if (a % 15 == 0) a = 15;
-        else if (a > 15) a %= 15;
+
+        if (a > 15) a %= 15;
 
         for (Elem e : table) {
             if (e.a == a) return e;
@@ -119,18 +120,18 @@ public class Curiputu {
     static int[] sumMatrix(int[] matr1, int[] matr2) {
         int resultMatr[] = new int[matr1.length];
         int resMatr[] = new int[matr2.length];
-        int sumA=0,sumB = 0;
+        int sumA = 0, sumB = 0;
 
         if (matr2.length < matr1.length) {
-            for (int i = 0, j = 0; i < matr1.length; i += 2, j++) {
+            for (int i = 0; i < matr1.length; i += 2) {
 
-                if(matr1[i]==0 || matr2[0]==0) sumA=0;
+                if (matr1[i] == 0 || matr2[0] == 0) sumA = 0;
                 else sumA = byDec(matr1[i]).a + byDec(matr2[0]).a;
                 if (sumA > 15) sumA %= 15;
                 resultMatr[i] = sumA;
 
 
-                if (matr1[i+1]==0 || matr2[1]==0) sumB=0;
+                if (matr1[i + 1] == 0 || matr2[1] == 0) sumB = 0;
                 else sumB = byDec(matr1[i + 1]).a + byDec(matr2[1]).a;
                 if (sumB > 15) sumB %= 15;
                 resultMatr[i + 1] = sumB;
@@ -150,11 +151,14 @@ public class Curiputu {
     }
 
     static void partOne() {
-        //int i = 7, k = 1, Px = 7, P1x = 6,Cx[] = {1, 13};              //std
-        int i = 26, k = 3, Px = 12, P1x = 3, Cx[] = {13, 4};          //mine
-        //int i = 21, k = 3, Px = 12, P1x = 4, Cx[]={8,1};             //nikit
+        //int i = 7, k = 1, Px = 7, P1x = 6, Cx[] = {1, 13};              //std
+        //int i = 26, k = 3, Px = 12, P1x = 3, Cx[] = {13, 4};          //mine
+        //int i = 15, k = 3, Px = 12, P1x = 4, Cx[] = {6, 11};          //nastya
+        // int i = 21, k = 3, Px = 12, P1x = 4, Cx[] = {8, 1};             //nikit
         //int i = 5, k = 3, Px = 14, P1x = 2;                        //kasya
-        //int Cx[] = {1, 13};
+        //int i = 25, k = 3, Px = 7, P1x = 6, Cx[] = {3, 8};          //illya
+        //int i = 6, k = 1, Px = 15, P1x = 1, Cx[]={6,2};
+        int i = 13, k = 1, Px = 12, P1x = 4, Cx[] = {8, 1};
 
         tableFill(table);
 
@@ -173,14 +177,20 @@ public class Curiputu {
         //K 1
         K[1] = byDec(byDec(i).dec ^ byDec(k).dec).a +
                 byRev(byDec(7).a).a;
-        K[1] %= 15;
-        if (K[1] == 0) K[1] = 1;
+        if (K[1] > 15) K[1] %= 15;
         K[1] = byA(K[1]).dec;
 
 
         //K 2
-        K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(4).dec).a +
-                byRev(byDec(k).a).a;
+        int ara = byDec(3).a + byDec(i).a;
+        System.out.println("1: "+ara);
+        int arara = byA(ara).dec ^ byDec(4).dec;
+        System.out.println("2: "+arara);
+        int ararara = byDec(arara).a;
+        System.out.println("3: "+ararara);
+        K[2] = ararara + byRev(byDec(k).a).a;
+//        K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(4).dec).a +
+//                byRev(byDec(k).a).a;
         if (K[2] > 15) K[2] %= 15;
 
         K[2] = byA(K[2]).dec;
@@ -385,6 +395,7 @@ public class Curiputu {
     }
 
     public static void main(String[] args) throws NullPointerException {
+
         partOne();
     }
 
