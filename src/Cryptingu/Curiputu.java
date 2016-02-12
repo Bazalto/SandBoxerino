@@ -150,6 +150,12 @@ public class Curiputu {
         return resultMatr;
     }
 
+    static int aSum(int a1,int a2){
+        if (a1==0 || a2==0) return 0;
+        else if ((a1+a2)>15) return (a1+a2)%15;
+        else return a1+a2;
+    }
+
     static void partOne() {
         //int i = 7, k = 1, Px = 7, P1x = 6, Cx[] = {1, 13};              //std
         //int i = 26, k = 3, Px = 12, P1x = 3, Cx[] = {13, 4};          //mine
@@ -188,7 +194,7 @@ public class Curiputu {
         System.out.println("2: "+arara);
         int ararara = byDec(arara).a;
         System.out.println("3: "+ararara);
-        K[2] = ararara + byRev(byDec(k).a).a;
+        K[2] = aSum(ararara, byRev(byDec(k).a).a);
 //        K[2] = byDec(byA(byDec(3).a + byDec(i).a).dec ^ byDec(4).dec).a +
 //                byRev(byDec(k).a).a;
         if (K[2] > 15) K[2] %= 15;
