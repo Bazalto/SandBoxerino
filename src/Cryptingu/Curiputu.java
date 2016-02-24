@@ -420,10 +420,10 @@ public class Curiputu {
   //int i = 7, k = 1, Px = 7, P1x = 6, Cx[] = new int[]{1, 13};              //std
   //int i = 26, k = 3, Px = 12, P1x = 3, Cx[] = new int[]{13, 4};          //mine
   //static int i = 15, k = 3, Px = 12, P1x = 4, Cx[] = new int[]{6, 11};          //nastya
-  //static int i = 21, k = 3, Px = 12, P1x = 4, Cx[] = new int[]{8, 1};  //nikit
+  static int i = 21, k = 3, Px = 12, P1x = 4, Cx[] = new int[]{8, 1};  //nikit
   //static int i = 5, k = 3, Px = 14, P1x = 2, Cx[] = new int[]{13, 4};    //kasya
   //int i = 25, k = 3, Px = 7, P1x = 6, Cx[] = new int[] {3, 8};          //illya
-  static int i = 6, k = 1, Px = 15, P1x = 1, Cx[] = new int[]{6,2};
+  //static int i = 6, k = 1, Px = 15, P1x = 1, Cx[] = new int[]{6,2};
   //int i = 13, k = 1, Px = 12, P1x = 4 Cx[] = new int[]{8, 1};
 
   //int i = 17, k = 3, Px = 14, P1x = 2 Cx[] = new int[]{8, 5};
