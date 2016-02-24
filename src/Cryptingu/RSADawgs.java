@@ -48,8 +48,11 @@ public class RSADawgs {
         int[] evklidus = new int[20];
 
 
-        evklidus[0] = e % eiler;
-        evklidus[1] = eiler % evklidus[0];
+        System.out.println(evklidus[0] = e % eiler);
+
+        System.out.println(evklidus[1] = eiler % evklidus[0]);
+        System.out.println(evklidus[2] = e % evklidus[1]);
+        System.out.println(evklidus[3] = eiler % evklidus[2]);
 
 
 
