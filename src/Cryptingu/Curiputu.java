@@ -376,7 +376,12 @@ public class Curiputu {
     System.out.println("X+k1: " + Arrays.toString(x));
 
     //M-1 * X
+    System.out.println("\nM-1: " + Arrays.toString(m));
+    x=matrixToA(x);
+    System.out.println("\nX: " + Arrays.toString(x)+"\n");
+
     x=multMatrix(m,x);
+
     System.out.println("M-1 * x: " + Arrays.toString(x));
 
     //R(X)
